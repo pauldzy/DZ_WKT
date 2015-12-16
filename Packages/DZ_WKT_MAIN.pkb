@@ -41,7 +41,7 @@ AS
          
       END IF; 
       
-      sdo_output := SDO_UTIL.APPEND(
+      sdo_output := MDSYS.SDO_UTIL.APPEND(
           p_geometry_1
          ,p_geometry_2
       );
@@ -3503,7 +3503,7 @@ AS
          FOR i IN 1 .. MDSYS.SDO_UTIL.GETNUMELEM(sdo_input)
          LOOP
             clb_output := clb_output || simplesdo2wkt(
-                p_input        => SDO_UTIL.EXTRACT(sdo_input,i)
+                p_input        => MDSYS.SDO_UTIL.EXTRACT(sdo_input,i)
                ,p_head         => 'FALSE'
                ,p_paren        => 'TRUE'
                ,p_prune_number => p_prune_number
@@ -3535,7 +3535,7 @@ AS
          FOR i IN 1 .. MDSYS.SDO_UTIL.GETNUMELEM(sdo_input)
          LOOP
             clb_output := clb_output || simplesdo2wkt(
-                p_input        => SDO_UTIL.EXTRACT(sdo_input,i)
+                p_input        => MDSYS.SDO_UTIL.EXTRACT(sdo_input,i)
                ,p_head         => 'FALSE'
                ,p_paren        => 'TRUE'
                ,p_prune_number => p_prune_number
@@ -3564,3 +3564,4 @@ AS
 
 END dz_wkt_main;
 /
+

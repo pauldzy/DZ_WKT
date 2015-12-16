@@ -16,7 +16,7 @@ AS
       int_counter    PLS_INTEGER := 1;
       ary_output     MDSYS.SDO_STRING2_ARRAY;
       num_end        NUMBER      := p_end;
-      str_trim       VARCHAR2(5) := UPPER(p_trim);
+      str_trim       VARCHAR2(5 Char) := UPPER(p_trim);
       
       FUNCTION trim_varray(
          p_input            IN MDSYS.SDO_STRING2_ARRAY
@@ -24,7 +24,7 @@ AS
       AS
          ary_output MDSYS.SDO_STRING2_ARRAY := MDSYS.SDO_STRING2_ARRAY();
          int_index  PLS_INTEGER := 1;
-         str_check  VARCHAR2(4000);
+         str_check  VARCHAR2(4000 Char);
          
       BEGIN
 
@@ -359,7 +359,7 @@ AS
       ,p_upper_bound IN            PLS_INTEGER DEFAULT NULL
    )
    AS
-      str_rotation  VARCHAR2(3);
+      str_rotation  VARCHAR2(3 Char);
       int_lb        PLS_INTEGER := p_lower_bound;
       int_ub        PLS_INTEGER := p_upper_bound;
       
@@ -489,7 +489,7 @@ AS
       ,p_upper_bound IN  NUMBER DEFAULT NULL
    ) RETURN VARCHAR2
    AS
-      str_results   VARCHAR2(3);
+      str_results   VARCHAR2(3 Char);
       num_area      NUMBER;
 
    BEGIN
@@ -1134,3 +1134,4 @@ AS
    
 END dz_wkt_util;
 /
+

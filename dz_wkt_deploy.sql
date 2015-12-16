@@ -7,6 +7,7 @@ WHENEVER OSERROR  EXIT -98;
 SET DEFINE OFF;
 
 
+
 --*************************--
 PROMPT DZ_WKT_UTIL.pks;
 
@@ -183,7 +184,7 @@ AS
       int_counter    PLS_INTEGER := 1;
       ary_output     MDSYS.SDO_STRING2_ARRAY;
       num_end        NUMBER      := p_end;
-      str_trim       VARCHAR2(5) := UPPER(p_trim);
+      str_trim       VARCHAR2(5 Char) := UPPER(p_trim);
       
       FUNCTION trim_varray(
          p_input            IN MDSYS.SDO_STRING2_ARRAY
@@ -191,7 +192,7 @@ AS
       AS
          ary_output MDSYS.SDO_STRING2_ARRAY := MDSYS.SDO_STRING2_ARRAY();
          int_index  PLS_INTEGER := 1;
-         str_check  VARCHAR2(4000);
+         str_check  VARCHAR2(4000 Char);
          
       BEGIN
 
@@ -526,7 +527,7 @@ AS
       ,p_upper_bound IN            PLS_INTEGER DEFAULT NULL
    )
    AS
-      str_rotation  VARCHAR2(3);
+      str_rotation  VARCHAR2(3 Char);
       int_lb        PLS_INTEGER := p_lower_bound;
       int_ub        PLS_INTEGER := p_upper_bound;
       
@@ -656,7 +657,7 @@ AS
       ,p_upper_bound IN  NUMBER DEFAULT NULL
    ) RETURN VARCHAR2
    AS
-      str_results   VARCHAR2(3);
+      str_results   VARCHAR2(3 Char);
       num_area      NUMBER;
 
    BEGIN
@@ -1301,6 +1302,8 @@ AS
    
 END dz_wkt_util;
 /
+
+
 --*************************--
 PROMPT DZ_WKT_MAIN.pks;
 
@@ -1312,8 +1315,8 @@ AS
    /*
    header: DZ_WKT
      
-   - Build ID: 2014-12-19_12-39-15
-   - TFS Change Set: 4386
+   - Build ID: 3
+   - TFS Change Set: 8194
    
    Utility for the exchange of geometries between Oracle Spatial and OGC
    Well Known Text 1.2.1 / PostGIS Extended WKT formats.
@@ -1449,6 +1452,7 @@ END dz_wkt_main;
 
 GRANT EXECUTE ON dz_wkt_main TO public;
 
+
 --*************************--
 PROMPT DZ_WKT_MAIN.pkb;
 
@@ -1495,7 +1499,7 @@ AS
          
       END IF; 
       
-      sdo_output := SDO_UTIL.APPEND(
+      sdo_output := MDSYS.SDO_UTIL.APPEND(
           p_geometry_1
          ,p_geometry_2
       );
@@ -4957,7 +4961,7 @@ AS
          FOR i IN 1 .. MDSYS.SDO_UTIL.GETNUMELEM(sdo_input)
          LOOP
             clb_output := clb_output || simplesdo2wkt(
-                p_input        => SDO_UTIL.EXTRACT(sdo_input,i)
+                p_input        => MDSYS.SDO_UTIL.EXTRACT(sdo_input,i)
                ,p_head         => 'FALSE'
                ,p_paren        => 'TRUE'
                ,p_prune_number => p_prune_number
@@ -4989,7 +4993,7 @@ AS
          FOR i IN 1 .. MDSYS.SDO_UTIL.GETNUMELEM(sdo_input)
          LOOP
             clb_output := clb_output || simplesdo2wkt(
-                p_input        => SDO_UTIL.EXTRACT(sdo_input,i)
+                p_input        => MDSYS.SDO_UTIL.EXTRACT(sdo_input,i)
                ,p_head         => 'FALSE'
                ,p_paren        => 'TRUE'
                ,p_prune_number => p_prune_number
@@ -5018,6 +5022,8 @@ AS
 
 END dz_wkt_main;
 /
+
+
 --*************************--
 PROMPT DZ_WKT_TEST.pks;
 
@@ -5025,10 +5031,10 @@ CREATE OR REPLACE PACKAGE dz_wkt_test
 AUTHID CURRENT_USER
 AS
 
-   C_TFS_CHANGESET CONSTANT NUMBER := 4386;
-   C_JENKINS_JOBNM CONSTANT VARCHAR2(255) := 'BUILD-DZ_WKT';
-   C_JENKINS_BUILD CONSTANT NUMBER := 39;
-   C_JENKINS_BLDID CONSTANT VARCHAR2(255) := '2014-12-19_12-39-15';
+   C_TFS_CHANGESET CONSTANT NUMBER := 8194;
+   C_JENKINS_JOBNM CONSTANT VARCHAR2(255 Char) := 'NULL';
+   C_JENKINS_BUILD CONSTANT NUMBER := 3;
+   C_JENKINS_BLDID CONSTANT VARCHAR2(255 Char) := 'NULL';
    
    C_PREREQUISITES CONSTANT MDSYS.SDO_STRING2_ARRAY := MDSYS.SDO_STRING2_ARRAY(
    );
@@ -5058,6 +5064,7 @@ END dz_wkt_test;
 /
 
 GRANT EXECUTE ON dz_wkt_test TO public;
+
 
 --*************************--
 PROMPT DZ_WKT_TEST.pkb;
@@ -5314,7 +5321,7 @@ AS
          
          IF p_check_oracle = TRUE
          THEN
-            wkt_oracle := SDO_UTIL.TO_WKTGEOMETRY(p_sdo_input);
+            wkt_oracle := MDSYS.SDO_UTIL.TO_WKTGEOMETRY(p_sdo_input);
             sdo_oracle := dz_wkt_main.wkt2sdo(
                 p_input => wkt_oracle
                ,p_srid  => num_srid
@@ -5462,7 +5469,7 @@ AS
          
          IF p_check_oracle = TRUE
          THEN
-            sdo_oracle := SDO_UTIL.FROM_WKTGEOMETRY(p_wkt_clob);
+            sdo_oracle := MDSYS.SDO_UTIL.FROM_WKTGEOMETRY(p_wkt_clob);
             sdo_oracle.SDO_SRID := num_srid;
             
             str_check := MDSYS.SDO_GEOM.RELATE(
@@ -6065,6 +6072,8 @@ AS
 
 END dz_wkt_test;
 /
+
+
 --*************************--
 PROMPT sqlplus_footer.sql;
 
