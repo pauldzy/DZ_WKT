@@ -142,3 +142,4 @@ END dz_wkt_main;
 /
 
 GRANT EXECUTE ON dz_wkt_main TO public;
+

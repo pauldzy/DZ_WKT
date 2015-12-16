@@ -250,7 +250,7 @@ AS
          
          IF p_check_oracle = TRUE
          THEN
-            wkt_oracle := SDO_UTIL.TO_WKTGEOMETRY(p_sdo_input);
+            wkt_oracle := MDSYS.SDO_UTIL.TO_WKTGEOMETRY(p_sdo_input);
             sdo_oracle := dz_wkt_main.wkt2sdo(
                 p_input => wkt_oracle
                ,p_srid  => num_srid
@@ -398,7 +398,7 @@ AS
          
          IF p_check_oracle = TRUE
          THEN
-            sdo_oracle := SDO_UTIL.FROM_WKTGEOMETRY(p_wkt_clob);
+            sdo_oracle := MDSYS.SDO_UTIL.FROM_WKTGEOMETRY(p_wkt_clob);
             sdo_oracle.SDO_SRID := num_srid;
             
             str_check := MDSYS.SDO_GEOM.RELATE(
@@ -1001,3 +1001,4 @@ AS
 
 END dz_wkt_test;
 /
+
