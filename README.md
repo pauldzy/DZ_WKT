@@ -1,6 +1,6 @@
 # DZ_WKT
 PL/SQL code for the conversion of OGC WKT to and from Oracle Spatial MDSYS.SDO_GEOMETRY.
-For the most up-to-date documentation see the auto-build  [dz_gml_deploy.pdf](https://github.com/pauldzy/DZ_WKT/blob/master/dz_wkt_deploy.pdf).
+For the most up-to-date documentation see the auto-build  [dz_wkt_deploy.pdf](https://github.com/pauldzy/DZ_WKT/blob/master/dz_wkt_deploy.pdf).
 
 This library is provided for testing and feedback.  It may be installed and executed from any schema.  The deployment script creates three packages:
 1. DZ\_WKT\_MAIN
