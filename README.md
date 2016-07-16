@@ -11,7 +11,7 @@ This library is provided for testing and feedback.  It may be installed and exec
 The test package is not needed for normal usage but always a good idea to inspect and keep around.
 
 Some simple usage that mirrors the capability of the SDO_UTIL WKT utilities:
-```
+```sql
 SELECT dz_wkt_main.sdo2wkt(
     MDSYS.SDO_GEOMETRY(2001,8265,SDO_POINT_TYPE(-100,200,NULL),NULL,NULL)
 ) 
@@ -20,7 +20,7 @@ dual;
 
 >> POINT ( -100 200)
 ```
-```
+```sql
 SELECT dz_wkt_main.wkt2sdo(
    'POINT(-100 200)'
 ) 
@@ -30,16 +30,22 @@ dual;
 > MDSYS.SDO_GEOMETRY(2001,NULL,MDSYS.SDO_POINT_TYPE(-100,200,NULL),NULL,NULL)
 ```
 or some more complicated items you can't do with the included Oracle utilities
-```
+```sql
 SELECT dz_wkt_main.wkt2sdo(
    'SRID=4269;POINT M(-100 75 30)'
 ) 
 FROM 
 dual;
 
->> MDSYS.SDO_GEOMETRY(3301,4269,NULL,MDSYS.SDO_ELEM_INFO_ARRAY(1,1,1),MDSYS.SDO_ORDINATE_ARRAY(-100,75,30))
+>> MDSYS.SDO_GEOMETRY(
+       3301
+      ,4269
+      ,NULL
+      ,MDSYS.SDO_ELEM_INFO_ARRAY(1,1,1)
+      ,MDSYS.SDO_ORDINATE_ARRAY(-100,75,30)
+   )
 ```
-```
+```sql
 SELECT 
 dz_wkt_main.wkt2sdo(
    'SRID=3857;LINESTRING Z(100045 1175 3000, 100050 1180 3010)'
@@ -47,9 +53,15 @@ dz_wkt_main.wkt2sdo(
 FROM 
 dual;
 
->> MDSYS.SDO_GEOMETRY(3002,3857,NULL,MDSYS.SDO_ELEM_INFO_ARRAY(1,2,1),MDSYS.SDO_ORDINATE_ARRAY(100045,1175,3000,100050,1180,3010))
+>> MDSYS.SDO_GEOMETRY(
+       3002
+      ,3857
+      ,NULL
+      ,MDSYS.SDO_ELEM_INFO_ARRAY(1,2,1)
+      ,MDSYS.SDO_ORDINATE_ARRAY(100045,1175,3000,100050,1180,3010)
+   )
 ```
-```
+```sql
 SELECT 
 dz_wkt_main.sdo2wkt(
     p_input => MDSYS.SDO_GEOMETRY(
@@ -64,7 +76,7 @@ dz_wkt_main.sdo2wkt(
 
 > SRID=3857;LINESTRING Z(100045 1175 3000,100050 1180 3010)
 ```
-```
+```sql
 SELECT dz_wkt_main.sdo2wkt(
     p_input => MDSYS.SDO_GEOMETRY(
         2002
