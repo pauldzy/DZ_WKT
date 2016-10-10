@@ -30,7 +30,6 @@ AS
    FUNCTION scratch_test
    RETURN NUMBER;
    
-
 END dz_wkt_test;
 /
 
