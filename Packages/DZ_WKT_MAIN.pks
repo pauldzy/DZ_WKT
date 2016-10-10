@@ -7,7 +7,7 @@ AS
    header: DZ_WKT
      
    - Build ID: DZBUILDIDDZ
-   - TFS Change Set: DZTFSCHANGESETDZ
+   - Change Set: DZCHANGESETDZ
    
    Utility for the exchange of geometries between Oracle Spatial and OGC
    Well Known Text 1.2.1 / PostGIS Extended WKT formats.
