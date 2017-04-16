@@ -6,8 +6,6 @@ WHENEVER SQLERROR EXIT -99;
 WHENEVER OSERROR  EXIT -98;
 SET DEFINE OFF;
 
-
-
 --*************************--
 PROMPT DZ_WKT_UTIL.pks;
 
@@ -190,9 +188,9 @@ AS
          p_input            IN MDSYS.SDO_STRING2_ARRAY
       ) RETURN MDSYS.SDO_STRING2_ARRAY
       AS
-         ary_output MDSYS.SDO_STRING2_ARRAY := MDSYS.SDO_STRING2_ARRAY();
-         int_index  PLS_INTEGER := 1;
-         str_check  VARCHAR2(4000 Char);
+         ary_output2 MDSYS.SDO_STRING2_ARRAY := MDSYS.SDO_STRING2_ARRAY();
+         int_index   PLS_INTEGER := 1;
+         str_check   VARCHAR2(4000 Char);
          
       BEGIN
 
@@ -203,7 +201,8 @@ AS
          IF p_input IS NULL
          OR p_input.COUNT = 0
          THEN
-            RETURN ary_output;
+            RETURN ary_output2;
+            
          END IF;
 
          --------------------------------------------------------------------------
@@ -213,14 +212,17 @@ AS
          FOR i IN 1 .. p_input.COUNT
          LOOP
             str_check := TRIM(p_input(i));
+            
             IF str_check IS NULL
             OR str_check = ''
             THEN
                NULL;
+               
             ELSE
-               ary_output.EXTEND(1);
-               ary_output(int_index) := str_check;
+               ary_output2.EXTEND(1);
+               ary_output2(int_index) := str_check;
                int_index := int_index + 1;
+               
             END IF;
 
          END LOOP;
@@ -229,7 +231,7 @@ AS
          -- Step 10
          -- Return the results
          --------------------------------------------------------------------------
-         RETURN ary_output;
+         RETURN ary_output2;
 
       END trim_varray;
 
@@ -254,6 +256,7 @@ AS
       IF num_end IS NULL
       THEN
          num_end := 0;
+         
       END IF;
 
       --------------------------------------------------------------------------
@@ -264,6 +267,7 @@ AS
       OR p_str = ''
       THEN
          RETURN ary_output;
+         
       END IF;
 
       --------------------------------------------------------------------------
@@ -277,6 +281,7 @@ AS
          LOOP
             ary_output.EXTEND(1);
             ary_output(i) := SUBSTR(p_str,i,1);
+            
          END LOOP;
          
          RETURN ary_output;
@@ -328,6 +333,7 @@ AS
          RETURN trim_varray(
             p_input => ary_output
          );
+         
       END IF;
 
       --------------------------------------------------------------------------
@@ -455,13 +461,19 @@ AS
       THEN
          dim_count := p_input.get_dims();
          gtype     := p_input.get_gtype();
+         
       ELSE
-         RAISE_APPLICATION_ERROR(-20001, 'Unable to determine dimensionality from gtype');
+         RAISE_APPLICATION_ERROR(
+             -20001
+            ,'Unable to determine dimensionality from gtype'
+         );
+         
       END IF;
 
       IF dim_count = 2
       THEN
          RETURN p_input;
+         
       END IF;
 
       geom_2d := MDSYS.SDO_GEOMETRY(
@@ -481,11 +493,12 @@ AS
       ELSE
          n_points    := p_input.SDO_ORDINATES.COUNT / dim_count;
          n_ordinates := n_points * 2;
+         
          geom_2d.SDO_ORDINATES.EXTEND(n_ordinates);
          j := p_input.SDO_ORDINATES.FIRST;
          k := 1;
          
-         FOR i IN 1 .. n_points
+         FOR i2 IN 1 .. n_points
          LOOP
             geom_2d.SDO_ORDINATES(k) := p_input.SDO_ORDINATES(j);
             geom_2d.SDO_ORDINATES(k + 1) := p_input.SDO_ORDINATES(j + 1);
@@ -545,6 +558,7 @@ AS
       IF p_upper_bound IS NULL
       THEN
          int_ub  := p_input.SDO_ORDINATES.COUNT;
+         
       END IF;
 
       str_rotation := test_ordinate_rotation(
@@ -597,11 +611,13 @@ AS
       IF int_ub IS NULL
       THEN
          int_ub  := p_input.SDO_ORDINATES.COUNT;
+         
       END IF;
 
       IF int_lb IS NULL
       THEN
          int_lb  := 1;
+         
       END IF;
 
       --------------------------------------------------------------------------
@@ -813,11 +829,13 @@ AS
       IF int_lb IS NULL
       THEN
          int_lb := 1;
+         
       END IF;
       
       IF int_ub IS NULL
       THEN
          int_ub  := p_input.SDO_ORDINATES.COUNT;
+         
       END IF;
       
       int_dims := p_input.get_dims();
@@ -828,12 +846,14 @@ AS
       IF int_n <= int_dims
       THEN
          RETURN;
+         
       END IF;
 
       -- Calculate the start n1, the end n2, and the middle m
       int_m  := int_lb + (int_n / 2);
       int_li := int_lb;
       int_ui := int_ub;
+      
       WHILE int_li < int_m
       LOOP
 
@@ -1046,11 +1066,13 @@ AS
       IF p_input IS NULL
       THEN
          RETURN;
+         
       END IF;
 
       IF p_target IS NULL
       THEN
          p_target := MDSYS.SDO_ELEM_INFO_ARRAY();
+         
       END IF;
       
       --------------------------------------------------------------------------
@@ -1171,11 +1193,13 @@ AS
       IF p_trunc IS NULL
       THEN
          RETURN p_input;
+         
       END IF;
       
       IF p_input IS NULL
       THEN
          RETURN NULL;
+         
       END IF;
       
       RETURN TRUNC(p_input,p_trunc);
@@ -1191,10 +1215,12 @@ AS
    AS
    BEGIN
       RETURN TO_CHAR(
-         prune_number(
+          prune_number(
              p_input => p_input
             ,p_trunc => p_trunc
-         )
+          )
+         ,'TM9'
+         ,'NLS_NUMERIC_CHARACTERS = ''.,'''
       );
       
    END prune_number_varchar2;
@@ -1208,7 +1234,7 @@ AS
    AS
    BEGIN
       RETURN TO_CLOB(
-         prune_number(
+         prune_number_varchar2(
              p_input => p_input
             ,p_trunc => p_trunc
          )
@@ -1254,6 +1280,7 @@ AS
       IF p_srid = p_input.SDO_SRID
       THEN
          RETURN p_input;
+         
       END IF;
 
       --------------------------------------------------------------------------
@@ -1315,8 +1342,8 @@ AS
    /*
    header: DZ_WKT
      
-   - Build ID: 3
-   - TFS Change Set: 8194
+   - Build ID: 2
+   - Change Set: fdb200e7d9fb12b6c335666679f07e60c837765a
    
    Utility for the exchange of geometries between Oracle Spatial and OGC
    Well Known Text 1.2.1 / PostGIS Extended WKT formats.
@@ -1936,8 +1963,6 @@ AS
          END IF;
       
       END IF;
-      
-      
       
    END wkt_diagnostic;
 
@@ -5031,10 +5056,10 @@ CREATE OR REPLACE PACKAGE dz_wkt_test
 AUTHID CURRENT_USER
 AS
 
-   C_TFS_CHANGESET CONSTANT NUMBER := 8194;
-   C_JENKINS_JOBNM CONSTANT VARCHAR2(255 Char) := 'NULL';
-   C_JENKINS_BUILD CONSTANT NUMBER := 3;
-   C_JENKINS_BLDID CONSTANT VARCHAR2(255 Char) := 'NULL';
+   C_CHANGESET CONSTANT VARCHAR2(255 Char) := 'fdb200e7d9fb12b6c335666679f07e60c837765a';
+   C_JENKINS_JOBNM CONSTANT VARCHAR2(255 Char) := 'DZ_WKT';
+   C_JENKINS_BUILD CONSTANT NUMBER := 2;
+   C_JENKINS_BLDID CONSTANT VARCHAR2(255 Char) := '2';
    
    C_PREREQUISITES CONSTANT MDSYS.SDO_STRING2_ARRAY := MDSYS.SDO_STRING2_ARRAY(
    );
@@ -5059,7 +5084,6 @@ AS
    FUNCTION scratch_test
    RETURN NUMBER;
    
-
 END dz_wkt_test;
 /
 
@@ -5220,7 +5244,7 @@ AS
    RETURN VARCHAR2
    AS
    BEGIN
-      RETURN '{"TFS":' || C_TFS_CHANGESET || ','
+      RETURN '{"CHANGESET":' || C_CHANGESET || ','
       || '"JOBN":"' || C_JENKINS_JOBNM || '",'   
       || '"BUILD":' || C_JENKINS_BUILD || ','
       || '"BUILDID":"' || C_JENKINS_BLDID || '"}';
@@ -6077,7 +6101,6 @@ END dz_wkt_test;
 --*************************--
 PROMPT sqlplus_footer.sql;
 
-
 SHOW ERROR;
 
 DECLARE
@@ -6111,4 +6134,3 @@ END;
 /
 
 EXIT;
-
