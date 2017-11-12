@@ -1,6 +1,6 @@
 # DZ_WKT
 
-PL/SQL code for the conversion of [OGC Well Known Text](http://www.opengeospatial.org/standards/sfa) and [Extended WKT](http://postgis.refractions.net/documentation/manual-1.3SVN/ch04.html#id2726317) to and from the [Oracle Spatial] (http://www.oracle.com/us/products/database/options/spatial/overview/index.html) MDSYS.SDO_GEOMETRY geometry type.
+PL/SQL code for the conversion of [OGC Well Known Text](http://www.opengeospatial.org/standards/sfa) and [Extended WKT](http://postgis.refractions.net/documentation/manual-1.3SVN/ch04.html#id2726317) to and from the [Oracle Spatial](http://www.oracle.com/us/products/database/options/spatial/overview/index.html) MDSYS.SDO_GEOMETRY geometry type.
 For the most up-to-date documentation see the auto-build [dz_wkt_deploy.pdf](https://github.com/pauldzy/DZ_WKT/blob/master/dz_wkt_deploy.pdf).
 
 This library is provided for testing and feedback.  It may be installed and executed from any schema.  The deployment script creates three packages:
