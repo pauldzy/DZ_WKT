@@ -6,8 +6,8 @@ AS
    /*
    header: DZ_WKT
      
-   - Build ID: DZBUILDIDDZ
-   - Change Set: DZCHANGESETDZ
+   - Release: %GITRELEASE%
+   - Commit Date: %GITCOMMITDATE%
    
    Utility for the exchange of geometries between Oracle Spatial and OGC
    Well Known Text 1.2.1 / PostGIS Extended WKT formats.

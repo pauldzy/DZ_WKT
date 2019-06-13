@@ -1,13 +1,9 @@
-
---*************************--
-PROMPT sqlplus_header.sql;
-
 WHENEVER SQLERROR EXIT -99;
 WHENEVER OSERROR  EXIT -98;
 SET DEFINE OFF;
 
---*************************--
-PROMPT DZ_WKT_UTIL.pks;
+--******************************--
+PROMPT Packages/DZ_WKT_UTIL.pks 
 
 CREATE OR REPLACE PACKAGE dz_wkt_util
 AUTHID CURRENT_USER
@@ -160,9 +156,8 @@ END dz_wkt_util;
 
 GRANT EXECUTE ON dz_wkt_util TO public;
 
-
---*************************--
-PROMPT DZ_WKT_UTIL.pkb;
+--******************************--
+PROMPT Packages/DZ_WKT_UTIL.pkb 
 
 CREATE OR REPLACE PACKAGE BODY dz_wkt_util
 AS
@@ -1330,9 +1325,8 @@ AS
 END dz_wkt_util;
 /
 
-
---*************************--
-PROMPT DZ_WKT_MAIN.pks;
+--******************************--
+PROMPT Packages/DZ_WKT_MAIN.pks 
 
 CREATE OR REPLACE PACKAGE dz_wkt_main
 AUTHID CURRENT_USER
@@ -1342,8 +1336,8 @@ AS
    /*
    header: DZ_WKT
      
-   - Build ID: 2
-   - Change Set: fdb200e7d9fb12b6c335666679f07e60c837765a
+   - Release: 2.0
+   - Commit Date: Sun Nov 12 07:06:12 2017 -0500
    
    Utility for the exchange of geometries between Oracle Spatial and OGC
    Well Known Text 1.2.1 / PostGIS Extended WKT formats.
@@ -1479,9 +1473,8 @@ END dz_wkt_main;
 
 GRANT EXECUTE ON dz_wkt_main TO public;
 
-
---*************************--
-PROMPT DZ_WKT_MAIN.pkb;
+--******************************--
+PROMPT Packages/DZ_WKT_MAIN.pkb 
 
 CREATE OR REPLACE PACKAGE BODY dz_wkt_main
 AS
@@ -5048,18 +5041,17 @@ AS
 END dz_wkt_main;
 /
 
-
---*************************--
-PROMPT DZ_WKT_TEST.pks;
+--******************************--
+PROMPT Packages/DZ_WKT_TEST.pks 
 
 CREATE OR REPLACE PACKAGE dz_wkt_test
 AUTHID CURRENT_USER
 AS
 
-   C_CHANGESET CONSTANT VARCHAR2(255 Char) := 'fdb200e7d9fb12b6c335666679f07e60c837765a';
-   C_JENKINS_JOBNM CONSTANT VARCHAR2(255 Char) := 'DZ_WKT';
-   C_JENKINS_BUILD CONSTANT NUMBER := 2;
-   C_JENKINS_BLDID CONSTANT VARCHAR2(255 Char) := '2';
+   C_GITRELEASE    CONSTANT VARCHAR2(255 Char) := '2.0';
+   C_GITCOMMIT     CONSTANT VARCHAR2(255 Char) := '773b8101188667e8f70e8695d0a0ce2342aa26b5';
+   C_GITCOMMITDATE CONSTANT VARCHAR2(255 Char) := 'Sun Nov 12 07:06:12 2017 -0500';
+   C_GITCOMMITAUTH CONSTANT VARCHAR2(255 Char) := 'Paul Dziemiela';
    
    C_PREREQUISITES CONSTANT MDSYS.SDO_STRING2_ARRAY := MDSYS.SDO_STRING2_ARRAY(
    );
@@ -5089,9 +5081,8 @@ END dz_wkt_test;
 
 GRANT EXECUTE ON dz_wkt_test TO public;
 
-
---*************************--
-PROMPT DZ_WKT_TEST.pkb;
+--******************************--
+PROMPT Packages/DZ_WKT_TEST.pkb 
 
 CREATE OR REPLACE PACKAGE BODY dz_wkt_test
 AS
@@ -5244,10 +5235,12 @@ AS
    RETURN VARCHAR2
    AS
    BEGIN
-      RETURN '{"CHANGESET":' || C_CHANGESET || ','
-      || '"JOBN":"' || C_JENKINS_JOBNM || '",'   
-      || '"BUILD":' || C_JENKINS_BUILD || ','
-      || '"BUILDID":"' || C_JENKINS_BLDID || '"}';
+      RETURN '{'
+      || ' "GITRELEASE":"'    || C_GITRELEASE    || '"'
+      || ',"GITCOMMIT":"'     || C_GITCOMMIT     || '"'
+      || ',"GITCOMMITDATE":"' || C_GITCOMMITDATE || '"'
+      || ',"GITCOMMITAUTH":"' || C_GITCOMMITAUTH || '"'
+      || '}';
       
    END version;
 
@@ -6097,10 +6090,6 @@ AS
 END dz_wkt_test;
 /
 
-
---*************************--
-PROMPT sqlplus_footer.sql;
-
 SHOW ERROR;
 
 DECLARE
@@ -6134,3 +6123,5 @@ END;
 /
 
 EXIT;
+SET DEFINE OFF;
+
